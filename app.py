@@ -57,19 +57,12 @@ st.markdown("""<style>
 </style>""", unsafe_allow_html=True)
 
 st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis data biaya medis. Silakan eksplorasi data yang telah tersedia.""", unsafe_allow_html=True)
-try:
 # Load dataset
 file_path = "C:/Users/agung/UAS/Regression.csv"
- data = pd.read_csv("Regression.csv")
-    
-    # Tampilkan data
-    st.write("Data berhasil dimuat:")
-    st.dataframe(data.head())
-except FileNotFoundError:
-    st.error("Error: File data.csv tidak ditemukan. Pastikan file ada di direktori yang benar.")
-except Exception as e:
-    st.error(f"Terjadi error: {str(e)}")
-
+if os.path.exists(file_path):
+    data = pd.read_csv(file_path)
+else:
+    print(f"File tidak ditemukan di: {file_path}")
 # Sidebar Navigation
 st.sidebar.title("Navigasi")
 pages = ["Data Overview", "Data Analysis", "Model Training"]
