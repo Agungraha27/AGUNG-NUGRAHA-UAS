@@ -1,6 +1,10 @@
 pandas 
 matplotlib
-seaborn 
-streamlit 
-sklearntrain
-sklearn
+seaborn
+streamlit
+sklearn.model_selection 
+train_test_split
+sklearn.linear_model 
+LinearRegression
+sklearn.metrics 
+mean_squared_error, r2_score
