@@ -60,7 +60,7 @@ st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis dat
 try:
 # Load dataset
 file_path = "C:/Users/agung/UAS/Regression.csv"
- data = pd.read_csv("data.csv")
+ data = pd.read_csv("Regression.csv")
     
     # Tampilkan data
     st.write("Data berhasil dimuat:")
