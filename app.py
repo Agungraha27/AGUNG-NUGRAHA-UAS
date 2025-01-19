@@ -58,12 +58,15 @@ st.markdown("""<style>
 
 st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis data biaya medis. Silakan eksplorasi data yang telah tersedia.""", unsafe_allow_html=True)
 
-# Load dataset
+# Load dataset (perbaiki bagian ini dengan pengecekan file yang ada)
 file_path = "d:/KULIAH MUHAMADIYAH/SEMESTER 3/DATA MINING/UAS/Regression.csv"
+
+# Menangani jika file tidak ditemukan
 if os.path.exists(file_path):
     data = pd.read_csv(file_path)
 else:
-    print(f"File tidak ditemukan di: {file_path}")
+    st.error(f"File tidak ditemukan di: {file_path}")
+    data = pd.DataFrame()  # Set data kosong jika file tidak ditemukan
 
 # Sidebar Navigation
 st.sidebar.title("Navigasi")
@@ -76,55 +79,64 @@ if selected_page == "Data Overview":
     st.markdown("""Pada halaman ini, Anda dapat melihat gambaran umum dari dataset yang digunakan. Dataset ini berisi informasi mengenai biaya medis yang dapat dianalisis untuk memahami berbagai faktor yang memengaruhi biaya tersebut.""", unsafe_allow_html=True)
 
     if st.button("🔍 Preview Dataset"):
-        st.write("<h3 style='text-align: left;'>Preview Dataset</h3>", unsafe_allow_html=True)
-        st.write("""Menampilkan 5 baris pertama dari dataset, yang memberikan gambaran awal mengenai data yang ada.""", unsafe_allow_html=True)
-        st.dataframe(data.head())
+        if not data.empty:
+            st.write("<h3 style='text-align: left;'>Preview Dataset</h3>", unsafe_allow_html=True)
+            st.write("""Menampilkan 5 baris pertama dari dataset, yang memberikan gambaran awal mengenai data yang ada.""", unsafe_allow_html=True)
+            st.dataframe(data.head())
+        else:
+            st.warning("Tidak ada data yang dapat ditampilkan.")
 
     if st.button("📊 Distribusi Variabel Kategori"):
-        st.write("<h3 style='text-align: left;'>Distribusi Variabel Kategori</h3>", unsafe_allow_html=True)
-        categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
-        for col in categorical_cols:
-            st.subheader(f"Distribusi {col.capitalize()}:")
-            st.bar_chart(data[col].value_counts())
+        if not data.empty:
+            st.write("<h3 style='text-align: left;'>Distribusi Variabel Kategori</h3>", unsafe_allow_html=True)
+            categorical_cols = data.select_dtypes(include=['object']).columns.tolist()
+            for col in categorical_cols:
+                st.subheader(f"Distribusi {col.capitalize()}:")
+                st.bar_chart(data[col].value_counts())
+        else:
+            st.warning("Tidak ada data yang dapat dianalisis.")
 
 # Page 2: Data Analysis
 elif selected_page == "Data Analysis":
     st.header("Analisis Data")
     st.write("""Halaman ini memberikan analisis mendalam mengenai hubungan antar variabel dalam dataset serta distribusi biaya medis (charges).""")
 
-    # Filter only numeric columns for correlation
-    numeric_data = data.select_dtypes(include=['float64', 'int64'])
-    
-    st.subheader("Heatmap Korelasi")
-    st.write("Heatmap di bawah ini menunjukkan hubungan antara variabel numerik dalam dataset.")
-    
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(numeric_data.corr(), annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
-    st.pyplot(fig)
+    if not data.empty:
+        # Filter only numeric columns for correlation
+        numeric_data = data.select_dtypes(include=['float64', 'int64'])
 
-    st.subheader("Pairplot (Hubungan Antar Variabel)")
-    st.markdown("""Pairplot membantu untuk memvisualisasikan hubungan antara beberapa variabel numerik. Pilih kolom yang ingin Anda analisis lebih lanjut.""")
-    pairplot_cols = st.multiselect("Pilih Kolom untuk Pairplot", numeric_data.columns.tolist())
+        st.subheader("Heatmap Korelasi")
+        st.write("Heatmap di bawah ini menunjukkan hubungan antara variabel numerik dalam dataset.")
 
-    if pairplot_cols:
-        fig = sns.pairplot(numeric_data[pairplot_cols])
+        fig, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(numeric_data.corr(), annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
         st.pyplot(fig)
 
-    st.subheader("Distribusi Biaya Medis (Charges)")
-    st.markdown("""Distribusi biaya medis menunjukkan bagaimana biaya tersebut tersebar di seluruh data.""")
-    fig, ax = plt.subplots()
-    sns.histplot(data['charges'], kde=True, ax=ax, color="blue")
-    ax.set_title("Distribusi Charges")
-    ax.set_xlabel("Charges")
-    ax.set_ylabel("Frequency")
-    st.pyplot(fig)
+        st.subheader("Pairplot (Hubungan Antar Variabel)")
+        st.markdown("""Pairplot membantu untuk memvisualisasikan hubungan antara beberapa variabel numerik. Pilih kolom yang ingin Anda analisis lebih lanjut.""")
+        pairplot_cols = st.multiselect("Pilih Kolom untuk Pairplot", numeric_data.columns.tolist())
 
-    st.subheader("Analisis Biaya Berdasarkan Kategori")
-    for col in ['sex', 'smoker', 'region']:
+        if pairplot_cols:
+            fig = sns.pairplot(numeric_data[pairplot_cols])
+            st.pyplot(fig)
+
+        st.subheader("Distribusi Biaya Medis (Charges)")
+        st.markdown("""Distribusi biaya medis menunjukkan bagaimana biaya tersebut tersebar di seluruh data.""")
         fig, ax = plt.subplots()
-        sns.boxplot(x=col, y='charges', data=data, ax=ax)
-        ax.set_title(f"Biaya Medis Berdasarkan {col.capitalize()}")
+        sns.histplot(data['charges'], kde=True, ax=ax, color="blue")
+        ax.set_title("Distribusi Charges")
+        ax.set_xlabel("Charges")
+        ax.set_ylabel("Frequency")
         st.pyplot(fig)
+
+        st.subheader("Analisis Biaya Berdasarkan Kategori")
+        for col in ['sex', 'smoker', 'region']:
+            fig, ax = plt.subplots()
+            sns.boxplot(x=col, y='charges', data=data, ax=ax)
+            ax.set_title(f"Biaya Medis Berdasarkan {col.capitalize()}")
+            st.pyplot(fig)
+    else:
+        st.warning("Data tidak ditemukan atau tidak dapat diproses.")
 
 # Page 3: Model Training
 elif selected_page == "Model Training":
