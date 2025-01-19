@@ -59,7 +59,7 @@ st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis dat
 
 # Load dataset
 file_path = "d:/KULIAH MUHAMADIYAH/SEMESTER 3/DATA MINING/UAS/Regression.csv"
-data = pd.read_csv(r"d:\KULIAH MUHAMADIYAH\SEMESTER 3\DATA MINING\UAS\Regression.csv")
+data = pd.read_csv(file_path)
 
 # Sidebar Navigation
 st.sidebar.title("Navigasi")
@@ -130,7 +130,7 @@ elif selected_page == "Model Training":
     # Preprocess Data Button
     if st.button("🔧 Preprocessing Data"):
         st.write("### Preprocessing Data")
-        st.write("""Pada tahap ini, data kategorikal diubah menjadi variabel dummy menggunakan `get_dummies` untuk memungkinkan model regresi linear bekerja dengan baik.""")
+        st.write("""Pada tahap ini, data kategorikal diubah menjadi variabel dummy menggunakan get_dummies untuk memungkinkan model regresi linear bekerja dengan baik.""")
         data_encoded = pd.get_dummies(data, columns=['sex', 'smoker', 'region'], drop_first=True)
         st.write("Data yang telah di-encode:", data_encoded.head())
 
@@ -215,4 +215,3 @@ elif selected_page == "Model Training":
         prediction_idr = prediction_usd[0] * conversion_rate  # Convert to IDR
 
         st.write(f"Prediksi Biaya Medis: Rp {prediction_idr:,.2f}")
- 
