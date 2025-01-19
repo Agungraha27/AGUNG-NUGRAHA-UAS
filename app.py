@@ -58,7 +58,7 @@ st.markdown("""<style>
 st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis data biaya medis. Silakan eksplorasi data yang telah tersedia.""", unsafe_allow_html=True)
 
 # Load dataset
-file_path = "d:\KULIAH MUHAMADIYAH\SEMESTER 3\DATA MINING\UAS\Regression.csv"
+file_path = "d:/KULIAH MUHAMADIYAH/SEMESTER 3/DATA MINING/UAS/Regression.csv"
 data = pd.read_csv(file_path)
 
 # Sidebar Navigation
