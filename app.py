@@ -59,7 +59,7 @@ st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis dat
 
 # Load dataset
 file_path = "d:/KULIAH MUHAMADIYAH/SEMESTER 3/DATA MINING/UAS/Regression.csv"
-data = pd.read_csv(d:\KULIAH MUHAMADIYAH\SEMESTER 3\DATA MINING\UAS\Regression.csv)
+data = pd.read_csv(r"d:\KULIAH MUHAMADIYAH\SEMESTER 3\DATA MINING\UAS\Regression.csv")
 
 # Sidebar Navigation
 st.sidebar.title("Navigasi")
