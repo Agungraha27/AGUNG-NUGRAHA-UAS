@@ -1,8 +1,8 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
-import os
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
@@ -58,12 +58,12 @@ st.markdown("""<style>
 
 st.markdown("""**Selamat datang!** Aplikasi ini dirancang untuk menganalisis data biaya medis. Silakan eksplorasi data yang telah tersedia.""", unsafe_allow_html=True)
 
-# Load dataset with the correct file path
-data = pd.read_csv("d:\\KULIAH MUHAMADIYAH\\SEMESTER 3\\DATA MINING\\UAS\\Regression.csv")
+# Load dataset
+file_path = "C:/Users/agung/UAS/Regression.csv"
 if os.path.exists(file_path):
     data = pd.read_csv(file_path)
 else:
-    st.error(f"File tidak ditemukan di: {file_path}")
+    print(f"File tidak ditemukan di: {file_path}")
 
 # Sidebar Navigation
 st.sidebar.title("Navigasi")
